@@ -10,13 +10,29 @@ let theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          "--tw-drop-shadow":
-            "drop-shadow(0 4px 10px rgb(0 0 0 / 0.12)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.1))",
-          filter: "var(--tw-drop-shadow)",
-          boxShadow: "none",
+          backgroundColor: "background.paper",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+          borderRadius: 3,
         },
       },
     },
+  },
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#4FC3F7", // soft cyan-blue accent
+    },
+    background: {
+      default: "#0E0F13", // dark space background
+      paper: "#161A22", // card surface
+    },
+    text: {
+      primary: "#EAEAF0",
+      secondary: "#A1A1AA",
+    },
+  },
+  shape: {
+    borderRadius: 10,
   },
 });
 

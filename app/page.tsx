@@ -18,6 +18,7 @@ import SelectField from "./components/selectField";
 import InputField from "./components/inputField";
 import { FormModel } from "./model/formModel";
 import { OutputModel } from "./model/outputModel";
+import Snowfall from "react-snowfall";
 
 export default function FitnessPlannerPage() {
   const [form, setForm] = useState<FormModel>({} as FormModel);
@@ -59,16 +60,19 @@ export default function FitnessPlannerPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="max-w-300 py-20 mx-auto">
-        <p className="text-3xl font-bold mb-3">Fitness Goal Planner</p>
-        <p className="mb-3">
+      <div className="py-20 mx-auto sm:px-15 px-3 max-w-300">
+        <Snowfall style={{ zIndex: -2, height: "100vh", position: "fixed" }} />
+        <p className="text-3xl font-bold mb-3 w-full max-sm:text-center">
+          Fitness Goal Planner
+        </p>
+        <p className="mb-3 max-sm:text-center">
           Enter your basic info to generate a weekly fitness plan.
         </p>
 
         {/* Input Form */}
-        <Card sx={{ mb: 4, borderRadius: 3 }}>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
+        <Card sx={{ mb: 4, borderRadius: 3, padding: { sm: 1 } }}>
+          <CardContent className="flex flex-col gap-3">
+            <div className="grid sm:grid-cols-2 gap-4">
               <InputField
                 error={
                   error && Number.isNaN(form.weight ?? NaN)
@@ -119,7 +123,11 @@ export default function FitnessPlannerPage() {
               />
             </div>
             <SelectField
-              error={error && form?.goal == "" ? "Height Must be Filled" : null}
+              error={
+                error && (form?.goal ?? "") == ""
+                  ? "Height Must be Filled"
+                  : null
+              }
               label="Goal"
               value={form?.goal ?? ""}
               placeholder="Goal"
@@ -157,7 +165,23 @@ export default function FitnessPlannerPage() {
               size="large"
               onClick={handleSubmit}
               disabled={loading}
-              sx={{ mt: 4 }}
+              sx={{
+                height: 48,
+                backgroundColor: "#F4F5F7",
+                color: "#0E1117",
+                fontWeight: 600,
+                letterSpacing: 0.6,
+                borderRadius: 2,
+                boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
+                "&:hover": {
+                  backgroundColor: "#868686ff",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
+                },
+                "&:active": {
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                },
+                mt: 3,
+              }}
             >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
@@ -171,9 +195,9 @@ export default function FitnessPlannerPage() {
         {/* Weekly Plan */}
         {weeklyPlan.length > 0 && (
           <div className="mb-4">
-            <p className="font-bold mb-2">Weekly Plan</p>
+            <p className="font-bold mb-2 ml-2">Weekly Plan</p>
             {weeklyPlan.map((day, idx) => (
-              <Card key={idx} sx={{ mb: 2, borderRadius: 3 }}>
+              <Card key={idx} sx={{ mb: 2, borderRadius: 3, padding: 1 }}>
                 <CardContent>
                   <p className="font-bold">
                     {day.day} - {day.focus}
@@ -194,12 +218,12 @@ export default function FitnessPlannerPage() {
         )}
 
         {nutritionTips.length > 0 && (
-          <div>
-            <p className="font-bold mb-1">Nutrition Tips</p>
+          <div className="mt-10">
+            <p className="font-bold mb-1 ml-2">Nutrition Tips</p>
             <List>
               {nutritionTips.map((tip, i) => (
                 <ListItem key={i} disablePadding>
-                  <ListItemText primary={tip} />
+                  <ListItemText primary={tip} className="ml-2" />
                 </ListItem>
               ))}
             </List>
