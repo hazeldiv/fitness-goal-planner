@@ -51,6 +51,13 @@ export async function POST(req: Request) {
           model: "openai/gpt-oss-120b:free",
           messages: [
             {
+              role: "system",
+              content: `You are a fitness planning assistant.
+                        You must return output ONLY in valid JSON.
+                        Do NOT include explanations, markdown, or extra text.
+                        The JSON structure must follow the schema exactly.`,
+            },
+            {
               role: "user",
               content: prompt,
             },
@@ -61,7 +68,9 @@ export async function POST(req: Request) {
     );
 
     const result = await response.json();
-    const output = JSON.parse(result.choices[0].message.content) as OutputModel;
+    const output = JSON.parse(
+      result.choices[0].message.content.replaceAll("—", "-")
+    ) as OutputModel;
     return NextResponse.json(output);
   } catch (error) {
     return NextResponse.json(

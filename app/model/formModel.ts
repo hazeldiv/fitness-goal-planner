@@ -1,6 +1,6 @@
 export interface FormModel {
-  weight: number | null;
-  height: number | null;
+  weight: number;
+  height: number;
   goal: string;
-  days: number | null;
+  days: number;
 }

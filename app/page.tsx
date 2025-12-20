@@ -29,10 +29,9 @@ export default function FitnessPlannerPage() {
   const handleSubmit = async () => {
     setError(false);
     if (
-      form.weight == null ||
-      form.height == null ||
-      form.days == null ||
-      form.goal == null ||
+      Number.isNaN(form.weight) ||
+      Number.isNaN(form.weight) ||
+      Number.isNaN(form.days) ||
       form.goal == ""
     ) {
       setError(true);
@@ -48,9 +47,7 @@ export default function FitnessPlannerPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       const data = (await res.json()) as OutputModel;
-      console.log(data);
       setWeeklyPlan(data.weeklyPlan || []);
       setNutritionTips(data.nutritionTips || []);
     } catch (err) {
@@ -63,18 +60,20 @@ export default function FitnessPlannerPage() {
   return (
     <ThemeProvider theme={theme}>
       <div className="max-w-300 py-20 mx-auto">
-        <p className="text-lg">Fitness Goal Planner</p>
+        <p className="text-3xl font-bold mb-3">Fitness Goal Planner</p>
         <p className="mb-3">
           Enter your basic info to generate a weekly fitness plan.
         </p>
 
         {/* Input Form */}
         <Card sx={{ mb: 4, borderRadius: 3 }}>
-          <div className="flex flex-col gap-4 p-8">
+          <CardContent>
             <div className="grid grid-cols-2 gap-4">
               <InputField
                 error={
-                  error && form?.weight == null ? "Weight Must be Filled" : null
+                  error && Number.isNaN(form.weight ?? NaN)
+                    ? "Weight Must be Filled"
+                    : null
                 }
                 label="Weight (kg)"
                 placeholder="Weight (kg)"
@@ -84,13 +83,21 @@ export default function FitnessPlannerPage() {
                     : ""
                 }
                 type="number"
-                onChange={(e) =>
-                  setForm({ ...form, weight: parseFloat(e.target.value) })
-                }
+                onChange={(e) => {
+                  const input = parseInt(e.target.value);
+                  if (input > 0 || e.target.value == "") {
+                    setForm({
+                      ...form,
+                      weight: e.target.value.startsWith("-") ? 0 : input,
+                    });
+                  }
+                }}
               />
               <InputField
                 error={
-                  error && form?.height == null ? "Height Must be Filled" : null
+                  error && Number.isNaN(form.height ?? NaN)
+                    ? "Height Must be Filled"
+                    : null
                 }
                 label="Height (cm)"
                 placeholder="Height (cm)"
@@ -100,19 +107,23 @@ export default function FitnessPlannerPage() {
                     : ""
                 }
                 type="number"
-                onChange={(e) =>
-                  setForm({ ...form, height: parseFloat(e.target.value) })
-                }
+                onChange={(e) => {
+                  const input = parseInt(e.target.value);
+                  if (input > 0 || e.target.value == "") {
+                    setForm({
+                      ...form,
+                      height: e.target.value.startsWith("-") ? 0 : input,
+                    });
+                  }
+                }}
               />
             </div>
             <SelectField
-              error={
-                error && form?.goal == null ? "Height Must be Filled" : null
-              }
+              error={error && form?.goal == "" ? "Height Must be Filled" : null}
               label="Goal"
               value={form?.goal ?? ""}
               placeholder="Goal"
-              onChange={(e) => setForm({ ...form, goal: e.target.value })}
+              onChange={(e) => setForm({ ...form, goal: e.target.value ?? "" })}
               options={[
                 { value: "Lose Weight", label: "Lose Weight" },
                 { value: "Gain Muscle", label: "Gain Muscle" },
@@ -121,7 +132,7 @@ export default function FitnessPlannerPage() {
             />
             <InputField
               error={
-                error && form?.days == null
+                error && Number.isNaN(form.days ?? NaN)
                   ? "Training days per week Must be Filled"
                   : null
               }
@@ -129,9 +140,15 @@ export default function FitnessPlannerPage() {
               placeholder="Training days per week"
               value={form?.days || form?.days == 0 ? form?.days.toString() : ""}
               type="number"
-              onChange={(e) =>
-                setForm({ ...form, days: parseInt(e.target.value) })
-              }
+              onChange={(e) => {
+                const input = parseInt(e.target.value);
+                if ((input <= 7 && input > 0) || e.target.value == "") {
+                  setForm({
+                    ...form,
+                    days: input,
+                  });
+                }
+              }}
             />
 
             <Button
@@ -148,26 +165,24 @@ export default function FitnessPlannerPage() {
                 "Generate Plan"
               )}
             </Button>
-          </div>
+          </CardContent>
         </Card>
 
         {/* Weekly Plan */}
         {weeklyPlan.length > 0 && (
-          <Box mb={4}>
-            <Typography variant="h5" fontWeight={600} mb={2}>
-              Weekly Plan
-            </Typography>
+          <div className="mb-4">
+            <p className="font-bold mb-2">Weekly Plan</p>
             {weeklyPlan.map((day, idx) => (
               <Card key={idx} sx={{ mb: 2, borderRadius: 3 }}>
                 <CardContent>
-                  <Typography fontWeight={600}>
-                    {day.day} — {day.focus}
-                  </Typography>
+                  <p className="font-bold">
+                    {day.day} - {day.focus}
+                  </p>
                   <List dense>
                     {day.workout.map((w: any, i: number) => (
                       <ListItem key={i} disablePadding>
                         <ListItemText
-                          primary={`${w.exercise} (${w.sets} sets × ${w.reps})`}
+                          primary={`${w.exercise} (${w.sets} sets x ${w.reps})`}
                         />
                       </ListItem>
                     ))}
@@ -175,14 +190,12 @@ export default function FitnessPlannerPage() {
                 </CardContent>
               </Card>
             ))}
-          </Box>
+          </div>
         )}
 
         {nutritionTips.length > 0 && (
-          <Box>
-            <Typography variant="h5" fontWeight={600} mb={1}>
-              Nutrition Tips
-            </Typography>
+          <div>
+            <p className="font-bold mb-1">Nutrition Tips</p>
             <List>
               {nutritionTips.map((tip, i) => (
                 <ListItem key={i} disablePadding>
@@ -190,7 +203,7 @@ export default function FitnessPlannerPage() {
                 </ListItem>
               ))}
             </List>
-          </Box>
+          </div>
         )}
       </div>
     </ThemeProvider>

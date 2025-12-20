@@ -56,6 +56,11 @@ export default function InputField({
               fontFamily: "kanit, sans-serif",
             },
           }}
+          onKeyDown={(e) => {
+            if (["e", "E", "+"].includes(e.key)) {
+              e.preventDefault();
+            }
+          }}
         />
         {error && (
           <FormHelperText sx={{ color: "#d93025", fontSize: 12 }}>
