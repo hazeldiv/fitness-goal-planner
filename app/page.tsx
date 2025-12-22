@@ -70,7 +70,7 @@ export default function FitnessPlannerPage() {
         </p>
 
         {/* Input Form */}
-        <Card sx={{ mb: 4, borderRadius: 3, padding: { sm: 1 } }}>
+        <Card sx={{ mb: 4, borderRadius: 2, padding: { sm: 1 } }}>
           <CardContent className="flex flex-col gap-3">
             <div className="grid sm:grid-cols-2 gap-4">
               <InputField
