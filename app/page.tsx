@@ -18,7 +18,7 @@ import SelectField from "./components/selectField";
 import InputField from "./components/inputField";
 import { FormModel } from "./model/formModel";
 import { OutputModel } from "./model/outputModel";
-import Snowfall from "react-snowfall";
+// import Snowfall from "react-snowfall";
 
 export default function FitnessPlannerPage() {
   const [form, setForm] = useState<FormModel>({} as FormModel);
@@ -60,9 +60,43 @@ export default function FitnessPlannerPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="py-20 mx-auto sm:px-15 px-3 max-w-300">
-        <Snowfall style={{ zIndex: -2, height: "100vh", position: "fixed" }} />
-        <p className="text-3xl font-bold mb-3 w-full max-sm:text-center">
+      <div className="mx-24 sm:px-15 px-3">
+        <div className="flex h-[100vh] items-center justify-between">
+          <div className="text-[#026345]">
+            <p className="text-6xl font-semibold">Fitly</p>
+            <p className="text-3xl mt-8">
+              Turn your goals into a weekly fitness plan.
+            </p>
+            <p className="text-3xl mt-1">
+              Train smarter. Eat better. Feel Stronger
+            </p>
+            <p className="mt-4 text-md">
+              Get a personalized weekly workout plan and simple nutrition tips
+              <br />
+              based on your body, goals, and training schedule in under a
+              minute.
+            </p>
+            <Button
+              variant="contained"
+              sx={{
+                textTransform: "none",
+                backgroundColor: "#026345",
+                color: "#EEF2F0",
+                fontSize: "20px",
+                borderRadius: "32px",
+                marginTop: "40px",
+              }}
+            >
+              Built My Plan
+            </Button>
+          </div>
+          <div>
+            <img src="/hero.png" alt="" className="h-full w-120" />
+          </div>
+        </div>
+
+        {/* <LightRays style={{ zIndex: -2, height: "100vh", position: "fixed" }} /> */}
+        <p className="text-3xl font-bold mb-3 w-full max-sm:text-center mt-100">
           Fitness Goal Planner
         </p>
         <p className="mb-3 max-sm:text-center">
