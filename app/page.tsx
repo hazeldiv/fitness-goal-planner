@@ -2,14 +2,12 @@
 
 import theme from "./theme";
 import { ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Button,
   Card,
   CardContent,
-  Typography,
   CircularProgress,
-  Box,
   List,
   ListItem,
   ListItemText,
@@ -26,6 +24,8 @@ export default function FitnessPlannerPage() {
   const [loading, setLoading] = useState(false);
   const [weeklyPlan, setWeeklyPlan] = useState<any[]>([]);
   const [nutritionTips, setNutritionTips] = useState<string[]>([]);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async () => {
     setError(false);
@@ -54,7 +54,12 @@ export default function FitnessPlannerPage() {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+        if (outputRef.current) {
+          outputRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 1500);
     }
   };
 
@@ -86,6 +91,11 @@ export default function FitnessPlannerPage() {
                 borderRadius: "32px",
                 marginTop: "40px",
               }}
+              onClick={() => {
+                if (inputRef.current) {
+                  inputRef.current.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
             >
               Built My Plan
             </Button>
@@ -104,7 +114,10 @@ export default function FitnessPlannerPage() {
         </p>
 
         {/* Input Form */}
-        <Card sx={{ mb: 4, borderRadius: 2, padding: { sm: 1 } }}>
+        <Card
+          sx={{ mb: 4, borderRadius: 2, padding: { sm: 1 } }}
+          ref={inputRef}
+        >
           <CardContent className="flex flex-col gap-3">
             <div className="grid sm:grid-cols-2 gap-4">
               <InputField
@@ -228,7 +241,7 @@ export default function FitnessPlannerPage() {
 
         {/* Weekly Plan */}
         {weeklyPlan.length > 0 && (
-          <div className="mb-4">
+          <div className="mb-4" ref={outputRef}>
             <p className="font-bold mb-2 ml-2">Weekly Plan</p>
             {weeklyPlan.map((day, idx) => (
               <Card key={idx} sx={{ mb: 2, borderRadius: 3, padding: 1 }}>

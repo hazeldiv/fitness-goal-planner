@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     let data = (await req.json()) as FormModel;
-    console.log(data);
     let prompt = ` Create a fitness plan based on the following user data:
       Weight (kg): ${data.weight}
       Height (cm): ${data.height}
