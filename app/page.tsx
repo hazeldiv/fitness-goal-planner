@@ -16,7 +16,7 @@ import SelectField from "./components/selectField";
 import InputField from "./components/inputField";
 import { FormModel } from "./model/formModel";
 import { OutputModel } from "./model/outputModel";
-// import Snowfall from "react-snowfall";
+import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
 
 export default function FitnessPlannerPage() {
   const [form, setForm] = useState<FormModel>({} as FormModel);
@@ -31,13 +31,14 @@ export default function FitnessPlannerPage() {
     setError(false);
     if (
       Number.isNaN(form.weight) ||
-      Number.isNaN(form.weight) ||
+      Number.isNaN(form.height) ||
       Number.isNaN(form.days) ||
       form.goal == ""
     ) {
       setError(true);
       return;
     }
+
     setLoading(true);
     setWeeklyPlan([]);
     setNutritionTips([]);
@@ -56,226 +57,188 @@ export default function FitnessPlannerPage() {
     } finally {
       setTimeout(() => {
         setLoading(false);
-        if (outputRef.current) {
-          outputRef.current.scrollIntoView({ behavior: "smooth" });
-        }
+        outputRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 1500);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="mx-24 sm:px-15 px-3">
-        <div className="flex h-[100vh] items-center justify-between">
-          <div className="text-[#026345]">
-            <p className="text-6xl font-semibold">Fitly</p>
-            <p className="text-3xl mt-8">
-              Turn your goals into a weekly fitness plan.
-            </p>
-            <p className="text-3xl mt-1">
-              Train smarter. Eat better. Feel Stronger
-            </p>
-            <p className="mt-4 text-md">
-              Get a personalized weekly workout plan and simple nutrition tips
-              <br />
-              based on your body, goals, and training schedule in under a
-              minute.
-            </p>
-            <Button
-              variant="contained"
-              sx={{
-                textTransform: "none",
-                backgroundColor: "#026345",
-                color: "#EEF2F0",
-                fontSize: "20px",
-                borderRadius: "32px",
-                marginTop: "40px",
-              }}
-              onClick={() => {
-                if (inputRef.current) {
-                  inputRef.current.scrollIntoView({ behavior: "smooth" });
+      <AnimatedGridPattern className="-z-2" />
+      {/* <div className="w-full bg-[#EEF2F0">*/}
+      <div className="w-full">
+        <div className="h-screen w-full">
+          <div className="flex h-screen items-center justify-between px-4 sm:px-12 lg:px-24">
+            <div className="text-[#026345]">
+              <p className="text-6xl font-semibold">Fitly</p>
+              <p className="text-3xl mt-8">
+                Turn your goals into a weekly fitness plan.
+              </p>
+              <p className="text-3xl mt-1">
+                Train smarter. Eat better. Feel stronger.
+              </p>
+              <p className="mt-4 text-md font-light">
+                Get a personalized weekly workout plan and simple nutrition tips
+                <br />
+                based on your body, goals, and training schedule in under a
+                minute.
+              </p>
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: "none",
+                  backgroundColor: "#026345",
+                  color: "#EEF2F0",
+                  fontSize: "20px",
+                  borderRadius: "32px",
+                  marginTop: "40px",
+                }}
+                onClick={() =>
+                  inputRef.current?.scrollIntoView({ behavior: "smooth" })
                 }
-              }}
-            >
-              Built My Plan
-            </Button>
-          </div>
-          <div>
-            <img src="/hero.png" alt="" className="h-full w-120" />
+              >
+                Build My Plan
+              </Button>
+            </div>
+            <div className="hidden md:block">
+              <img src="/hero.png" alt="Hero" className="h-full w-[480px]" />
+            </div>
           </div>
         </div>
 
-        {/* <LightRays style={{ zIndex: -2, height: "100vh", position: "fixed" }} /> */}
-        <p className="text-3xl font-bold mb-3 w-full max-sm:text-center mt-100">
-          Fitness Goal Planner
-        </p>
-        <p className="mb-3 max-sm:text-center">
-          Enter your basic info to generate a weekly fitness plan.
-        </p>
+        <div className="px-4 my-32 sm:px-12 lg:px-24">
+          <p className="text-3xl font-normal mb-3 text-center sm:text-left text-[#026345]">
+            Create Your Fitness Plan
+          </p>
+          <p className="text-xl mb-6 font-light text-center sm:text-left text-[#026345]">
+            Tell us about your body, goals, and schedule — we'll do the rest.
+          </p>
 
-        {/* Input Form */}
-        <Card
-          sx={{ mb: 4, borderRadius: 2, padding: { sm: 1 } }}
-          ref={inputRef}
-        >
-          <CardContent className="flex flex-col gap-3">
-            <div className="grid sm:grid-cols-2 gap-4">
+          <Card
+            ref={inputRef}
+            sx={{
+              mb: 4,
+              borderRadius: 2,
+              backgroundColor: "#F5F7F6",
+            }}
+          >
+            <CardContent className="flex flex-col gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <InputField
+                  error={
+                    error && Number.isNaN(form.weight ?? NaN)
+                      ? "Weight must be filled"
+                      : null
+                  }
+                  label="Weight (kg)"
+                  value={form?.weight?.toString() ?? ""}
+                  type="number"
+                  onChange={(e) =>
+                    setForm({ ...form, weight: parseInt(e.target.value) })
+                  }
+                />
+                <InputField
+                  error={
+                    error && Number.isNaN(form.height ?? NaN)
+                      ? "Height must be filled"
+                      : null
+                  }
+                  label="Height (cm)"
+                  value={form?.height?.toString() ?? ""}
+                  type="number"
+                  onChange={(e) =>
+                    setForm({ ...form, height: parseInt(e.target.value) })
+                  }
+                />
+              </div>
+
+              <SelectField
+                error={error && !form.goal ? "Goal must be selected" : null}
+                label="Goal"
+                value={form?.goal ?? ""}
+                onChange={(e) => setForm({ ...form, goal: e.target.value })}
+                options={[
+                  { value: "Lose Weight", label: "Lose Weight" },
+                  { value: "Gain Muscle", label: "Gain Muscle" },
+                  { value: "Maintain Fitness", label: "Maintain Fitness" },
+                ]}
+              />
+
               <InputField
                 error={
-                  error && Number.isNaN(form.weight ?? NaN)
-                    ? "Weight Must be Filled"
+                  error && Number.isNaN(form.days ?? NaN)
+                    ? "Training days must be filled"
                     : null
                 }
-                label="Weight (kg)"
-                placeholder="Weight (kg)"
-                value={
-                  form?.weight || form?.weight == 0
-                    ? form?.weight.toString()
-                    : ""
-                }
+                label="Training days per week"
+                value={form?.days?.toString() ?? ""}
                 type="number"
-                onChange={(e) => {
-                  const input = parseInt(e.target.value);
-                  if (input > 0 || e.target.value == "") {
-                    setForm({
-                      ...form,
-                      weight: e.target.value.startsWith("-") ? 0 : input,
-                    });
-                  }
-                }}
+                onChange={(e) =>
+                  setForm({ ...form, days: parseInt(e.target.value) })
+                }
               />
-              <InputField
-                error={
-                  error && Number.isNaN(form.height ?? NaN)
-                    ? "Height Must be Filled"
-                    : null
-                }
-                label="Height (cm)"
-                placeholder="Height (cm)"
-                value={
-                  form?.height || form?.height == 0
-                    ? form?.height.toString()
-                    : ""
-                }
-                type="number"
-                onChange={(e) => {
-                  const input = parseInt(e.target.value);
-                  if (input > 0 || e.target.value == "") {
-                    setForm({
-                      ...form,
-                      height: e.target.value.startsWith("-") ? 0 : input,
-                    });
-                  }
+
+              <Button
+                variant="contained"
+                fullWidth
+                size="large"
+                onClick={handleSubmit}
+                disabled={loading}
+                sx={{
+                  height: 48,
+                  backgroundColor: "#026345",
+                  color: "#EEF2F0",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  mt: 2,
                 }}
-              />
-            </div>
-            <SelectField
-              error={
-                error && (form?.goal ?? "") == ""
-                  ? "Height Must be Filled"
-                  : null
-              }
-              label="Goal"
-              value={form?.goal ?? ""}
-              placeholder="Goal"
-              onChange={(e) => setForm({ ...form, goal: e.target.value ?? "" })}
-              options={[
-                { value: "Lose Weight", label: "Lose Weight" },
-                { value: "Gain Muscle", label: "Gain Muscle" },
-                { value: "Maintain Fitness", label: "Maintain Fitness" },
-              ]}
-            />
-            <InputField
-              error={
-                error && Number.isNaN(form.days ?? NaN)
-                  ? "Training days per week Must be Filled"
-                  : null
-              }
-              label="Training days per week"
-              placeholder="Training days per week"
-              value={form?.days || form?.days == 0 ? form?.days.toString() : ""}
-              type="number"
-              onChange={(e) => {
-                const input = parseInt(e.target.value);
-                if ((input <= 7 && input > 0) || e.target.value == "") {
-                  setForm({
-                    ...form,
-                    days: input,
-                  });
-                }
-              }}
-            />
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Generate Plan"
+                )}
+              </Button>
+            </CardContent>
+          </Card>
 
-            <Button
-              variant="contained"
-              fullWidth
-              size="large"
-              onClick={handleSubmit}
-              disabled={loading}
-              sx={{
-                height: 48,
-                backgroundColor: "#F4F5F7",
-                color: "#0E1117",
-                fontWeight: 600,
-                letterSpacing: 0.6,
-                borderRadius: 2,
-                boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
-                "&:hover": {
-                  backgroundColor: "#868686ff",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
-                },
-                "&:active": {
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                },
-                mt: 3,
-              }}
-            >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Generate Plan"
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Weekly Plan */}
-        {weeklyPlan.length > 0 && (
-          <div className="mb-4" ref={outputRef}>
-            <p className="font-bold mb-2 ml-2">Weekly Plan</p>
-            {weeklyPlan.map((day, idx) => (
-              <Card key={idx} sx={{ mb: 2, borderRadius: 3, padding: 1 }}>
-                <CardContent>
-                  <p className="font-bold">
-                    {day.day} - {day.focus}
-                  </p>
-                  <List dense>
-                    {day.workout.map((w: any, i: number) => (
-                      <ListItem key={i} disablePadding>
-                        <ListItemText
-                          primary={`${w.exercise} (${w.sets} sets x ${w.reps})`}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {nutritionTips.length > 0 && (
-          <div className="mt-10">
-            <p className="font-bold mb-1 ml-2">Nutrition Tips</p>
-            <List>
-              {nutritionTips.map((tip, i) => (
-                <ListItem key={i} disablePadding>
-                  <ListItemText primary={tip} className="ml-2" />
-                </ListItem>
+          {weeklyPlan.length > 0 && (
+            <div ref={outputRef}>
+              <p className="font-bold mb-3">Weekly Plan</p>
+              {weeklyPlan.map((day, idx) => (
+                <Card key={idx} sx={{ mb: 2, borderRadius: 3 }}>
+                  <CardContent>
+                    <p className="font-bold">
+                      {day.day} — {day.focus}
+                    </p>
+                    <List dense>
+                      {day.workout.map((w: any, i: number) => (
+                        <ListItem key={i} disablePadding>
+                          <ListItemText
+                            primary={`${w.exercise} (${w.sets} x ${w.reps})`}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </CardContent>
+                </Card>
               ))}
-            </List>
-          </div>
-        )}
+            </div>
+          )}
+
+          {nutritionTips.length > 0 && (
+            <div className="mt-10">
+              <p className="font-bold mb-2">Nutrition Tips</p>
+              <List>
+                {nutritionTips.map((tip, i) => (
+                  <ListItem key={i} disablePadding>
+                    <ListItemText primary={tip} />
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          )}
+        </div>
       </div>
     </ThemeProvider>
   );

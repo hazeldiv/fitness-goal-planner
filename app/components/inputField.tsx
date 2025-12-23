@@ -34,9 +34,9 @@ export default function InputField({
     >
       <FormControl fullWidth>
         <FormHelperText
-          sx={{ color: "#e0e0e0", fontSize: 15, display: "flex", gap: 0.3 }}
+          sx={{ color: "#026345", fontSize: 15, display: "flex", gap: 0.3 }}
         >
-          <span style={{ fontFamily: "Kanit, sans-serif" }}>{label}</span>
+          <span>{label}</span>
           {required && <span className="text-[#d93025]">*</span>}
         </FormHelperText>
         <TextField
