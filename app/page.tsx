@@ -169,9 +169,11 @@ export default function FitnessPlannerPage() {
                 label="Training days per week"
                 value={form?.days?.toString() ?? ""}
                 type="number"
-                onChange={(e) =>
-                  setForm({ ...form, days: parseInt(e.target.value) })
-                }
+                onChange={(e) => {
+                  const day = parseInt(e.target.value);
+                  if (day <= 0 || day > 7) return;
+                  setForm({ ...form, days: day });
+                }}
               />
 
               <Button
