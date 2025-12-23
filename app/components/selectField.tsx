@@ -37,7 +37,7 @@ export default function SelectField({
         <FormHelperText
           sx={{ color: "#026345", fontSize: 15, display: "flex", gap: 0.3 }}
         >
-          <span style={{ fontFamily: "Kanit, sans-serif" }}>{label}</span>
+          <span>{label}</span>
           {required && <span className="text-[#d93025]">*</span>}
         </FormHelperText>
         <Select
@@ -47,7 +47,6 @@ export default function SelectField({
           onChange={onChange}
           input={<OutlinedInput />}
           disabled={disabled == true}
-          // sx={{ borderRadius: borderRadius }}
           renderValue={(selected) => {
             if (!selected) {
               return (

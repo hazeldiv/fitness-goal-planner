@@ -31,7 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${alexandria.className} antialiased`}>{children}</body>
+      <body className={`${alexandria.className} antialiased relative`}>
+        {children}
+      </body>
     </html>
   );
 }

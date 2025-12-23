@@ -51,11 +51,6 @@ export default function InputField({
           onChange={onChange}
           multiline={line != null}
           rows={line}
-          sx={{
-            "& .MuiInputBase-input::placeholder": {
-              fontFamily: "kanit, sans-serif",
-            },
-          }}
           onKeyDown={(e) => {
             if (["e", "E", "+"].includes(e.key)) {
               e.preventDefault();

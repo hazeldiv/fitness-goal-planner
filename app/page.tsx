@@ -64,8 +64,7 @@ export default function FitnessPlannerPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AnimatedGridPattern className="-z-2" />
-      {/* <div className="w-full bg-[#EEF2F0">*/}
+      <AnimatedGridPattern className="-z-2 absolute inset-0" />
       <div className="w-full">
         <div className="h-screen w-full">
           <div className="flex h-screen items-center justify-between px-4 sm:px-12 lg:px-24">
@@ -106,7 +105,7 @@ export default function FitnessPlannerPage() {
           </div>
         </div>
 
-        <div className="px-4 my-32 sm:px-12 lg:px-24">
+        <div className="px-4 my-32 sm:px-12 lg:px-24" ref={inputRef}>
           <p className="text-3xl font-normal mb-3 text-center sm:text-left text-[#026345]">
             Create Your Fitness Plan
           </p>
@@ -115,11 +114,8 @@ export default function FitnessPlannerPage() {
           </p>
 
           <Card
-            ref={inputRef}
             sx={{
               mb: 4,
-              borderRadius: 2,
-              backgroundColor: "#F5F7F6",
             }}
           >
             <CardContent className="flex flex-col gap-4">
@@ -203,7 +199,7 @@ export default function FitnessPlannerPage() {
           </Card>
 
           {weeklyPlan.length > 0 && (
-            <div ref={outputRef}>
+            <div ref={outputRef} className="text-[#026345]">
               <p className="font-bold mb-3">Weekly Plan</p>
               {weeklyPlan.map((day, idx) => (
                 <Card key={idx} sx={{ mb: 2, borderRadius: 3 }}>
@@ -227,7 +223,7 @@ export default function FitnessPlannerPage() {
           )}
 
           {nutritionTips.length > 0 && (
-            <div className="mt-10">
+            <div className="mt-10 text-[#026345]">
               <p className="font-bold mb-2">Nutrition Tips</p>
               <List>
                 {nutritionTips.map((tip, i) => (
