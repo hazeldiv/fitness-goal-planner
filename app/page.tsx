@@ -67,7 +67,7 @@ export default function FitnessPlannerPage() {
       <AnimatedGridPattern className="-z-2 absolute inset-0" />
       <div className="w-full">
         <div className="h-screen w-full">
-          <div className="flex h-screen items-center justify-between px-4 sm:px-12 lg:px-24">
+          <div className="flex h-screen items-center justify-between px-5 sm:px-12 lg:px-36">
             <div className="text-[#026345]">
               <p className="text-6xl font-semibold">Fitly</p>
               <p className="text-3xl mt-8">
@@ -105,7 +105,7 @@ export default function FitnessPlannerPage() {
           </div>
         </div>
 
-        <div className="px-4 my-32 sm:px-12 lg:px-24" ref={inputRef}>
+        <div className="px-4 mt-32 pb-32 sm:px-12 lg:px-24" ref={inputRef}>
           <p className="text-3xl font-normal mb-3 text-center sm:text-left text-[#026345]">
             Create Your Fitness Plan
           </p>
