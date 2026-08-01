@@ -47,7 +47,7 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-120b:free",
+          model: "nvidia/nemotron-3-super-120b-a12b:free",
           messages: [
             {
               role: "system",
@@ -63,12 +63,12 @@ export async function POST(req: Request) {
           ],
           reasoning: { enabled: true },
         }),
-      }
+      },
     );
 
     const result = await response.json();
     const output = JSON.parse(
-      result.choices[0].message.content.replaceAll("—", "-")
+      result.choices[0].message.content.replaceAll("—", "-"),
     ) as OutputModel;
     return NextResponse.json(output);
   } catch (error) {
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
       { success: false },
       {
         status: 401,
-      }
+      },
     );
   }
 }
