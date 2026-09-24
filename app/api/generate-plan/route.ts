@@ -70,7 +70,7 @@ export async function POST(req: Request) {
                   content: prompt,
                 },
               ],
-              reasoning: { enabled: true },
+              reasoning: { enabled: false },
             }),
           },
         );
