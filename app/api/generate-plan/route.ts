@@ -3,6 +3,7 @@ import { OutputModel } from "@/app/model/outputModel";
 import { NextResponse } from "next/server";
 
 const MODELS = [
+  "poolside/laguna-xs-2.1:free",
   "nvidia/nemotron-3.5-lightning:free",
   "nvidia/nemotron-3-ultra-550b-a55b:free",
   "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
